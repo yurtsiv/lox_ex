@@ -1,21 +1,15 @@
-# Lox
+# lox_ex
 
-**TODO: Add description**
+[IN PROGRESS]
 
-## Installation
+An Elixir implementation of a tree-walk interpreter from [Crafting Interpreters](https://craftinginterpreters.com/).
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `lox` to your list of dependencies in `mix.exs`:
+## Usage
 
-```elixir
-def deps do
-  [
-    {:lox, "~> 0.1.0"}
-  ]
-end
+```bash
+# REPL
+mix run
+
+# Run a file
+mix run -- path/to/file
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/lox>.
-
