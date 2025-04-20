@@ -1,18 +1,25 @@
 defmodule Lox do
-  @moduledoc """
-  Documentation for `Lox`.
-  """
+  use Application
 
-  @doc """
-  Hello world.
+  def start(_type, _args) do
+    case System.argv() do
+      [] ->
+        Lox.Repl.run()
 
-  ## Examples
+      [path] ->
+        run_file(path)
 
-      iex> Lox.hello()
-      :world
+      _ ->
+        IO.puts("Usage: mix run -- [script]")
+    end
 
-  """
-  def hello do
-    :world
+    {:ok, self()}
+  end
+
+  defp run_file(path) do
+    case File.read(path) do
+      {:ok, script} -> Lox.Runner.run(script)
+      _ -> IO.puts("Invalid file")
+    end
   end
 end
