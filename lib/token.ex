@@ -1,4 +1,10 @@
 defmodule Lox.Token do
+  @type t() :: %__MODULE__{
+          type: :atom,
+          lexeme: String.t(),
+          literal: String.t() | nil,
+          line: pos_integer()
+        }
   defstruct [:type, :lexeme, :literal, :line]
 
   defmodule Type do
