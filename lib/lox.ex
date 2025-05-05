@@ -2,16 +2,16 @@ defmodule Lox do
   use Application
 
   def start(_type, _args) do
-    case System.argv() do
-      [] ->
-        Lox.Repl.run()
+    # case System.argv() do
+    #   [] ->
+    #     Lox.Repl.run()
 
-      [path] ->
-        run_file(path)
+    #   [path] ->
+    #     run_file(path)
 
-      _ ->
-        IO.puts("Usage: mix run -- [script]")
-    end
+    #   _ ->
+    #     IO.puts("Usage: mix run -- [script]")
+    # end
 
     {:ok, self()}
   end
