@@ -66,7 +66,10 @@ defmodule Lox.Parser do
     {expr, state} = term(state)
 
     Enum.reduce_while(state.current..state.tokens_count, %{expr: expr, state: state}, fn _, acc ->
-      case match([Type.greater(), Type.greater_equal(), Type.less_equal()], acc.state) do
+      case match(
+             [Type.greater(), Type.greater_equal(), Type.less(), Type.less_equal()],
+             acc.state
+           ) do
         {true, state} ->
           operator = previous(state)
           {right, state} = term(state)
