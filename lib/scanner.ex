@@ -1,7 +1,7 @@
 defmodule Lox.Scanner do
   alias Lox.Error
   alias Lox.Token
-  alias Lox.Token.Type
+  use Lox.Token.Type
 
   @keywords %{
     "and" => Type.and(),

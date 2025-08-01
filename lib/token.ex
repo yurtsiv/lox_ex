@@ -8,6 +8,13 @@ defmodule Lox.Token do
   defstruct [:type, :lexeme, :literal, :line]
 
   defmodule Type do
+    defmacro __using__(_opts) do
+      quote do
+        require Lox.Token.Type
+        alias Lox.Token.Type
+      end
+    end
+
     types = [
       :left_paren,
       :right_paren,
@@ -57,7 +64,7 @@ defmodule Lox.Token do
     ]
 
     for type <- types do
-      def unquote(type)(), do: unquote(type)
+      defmacro unquote(type)(), do: unquote(type)
     end
   end
 end

@@ -16,7 +16,7 @@ defmodule Lox.Parser do
   alias Lox.Error
   alias Lox.Expression, as: Expr
   alias Lox.Token
-  alias Lox.Token.Type
+  use Lox.Token.Type
 
   @spec parse(tokens: [Token.t()]) :: {:ok, Expr.t()} | :error
   def parse(tokens) do
