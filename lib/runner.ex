@@ -5,13 +5,15 @@ defmodule Lox.Runner do
   alias Lox.AstPrinter
 
   def run(source) do
-    with {:ok, tokens} <- Scanner.run(source),
-         {:ok, ast} <- Parser.parse(tokens),
-         {:ok, result} <- Interpreter.run(ast) do
+    with {:scan, {:ok, tokens}} <- {:scan, Scanner.run(source)},
+         {:parse, {:ok, ast}} <- {:parse, Parser.parse(tokens)},
+         {:run, {:ok, result}} <- {:run, Interpreter.run(ast)} do
       IO.puts("AST: #{AstPrinter.print(ast)}")
       IO.puts("Result: #{result}")
     else
-      _ -> :error
+      {:scan, _} -> :scan_error
+      {:parse, _} -> :parse_error
+      {:run, _} -> :runtime_error
     end
   end
 end
