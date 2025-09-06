@@ -90,8 +90,10 @@ defmodule Lox.Interpreter do
   defp is_truthy(value) when is_boolean(value), do: value
   defp is_truthy(_value), do: true
 
-  defp evaluate_plus(_token, left, right) when is_binary(left) and is_binary(right) do
-    "#{left}#{right}"
+  defp evaluate_plus(_token, left, right)
+       when (is_binary(left) and is_binary(right)) or (is_binary(left) and is_number(right)) or
+              (is_number(left) and is_binary(right)) do
+    "#{number_to_string(left)}#{number_to_string(right)}"
   end
 
   defp evaluate_plus(_token, left, right) when is_number(left) and is_number(right) do
@@ -99,7 +101,7 @@ defmodule Lox.Interpreter do
   end
 
   defp evaluate_plus(token, _left, _right) do
-    raise Error.RuntimeError, token: token, message: "Operands must be two numbers or two strings"
+    raise Error.RuntimeError, token: token, message: "Operands must be numbers or strings"
   end
 
   defp check_number_operand(token, operand) do
@@ -123,4 +125,10 @@ defmodule Lox.Interpreter do
         raise Error.RuntimeError, token: token, message: message
     end
   end
+
+  defp number_to_string(number) when is_number(number) do
+    String.trim_trailing("#{number}", ".0")
+  end
+
+  defp number_to_string(number) when is_binary(number), do: number
 end
