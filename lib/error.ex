@@ -9,7 +9,7 @@ defmodule Lox.Error do
   end
 
   defmodule RuntimeError do
-    defexception [:token, message: "Runtime error"]
+    defexception [:token, :type, message: "Runtime error"]
   end
 
   def report(%Error.ParseError{} = error) do

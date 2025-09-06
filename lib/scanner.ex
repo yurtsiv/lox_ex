@@ -172,10 +172,17 @@ defmodule Lox.Scanner do
       peek(state) == "\"" ->
         state = advance(state)
 
+        slice_from = state.start + 1
+        slice_to = state.current - 2
+
         add_token(
           state,
           Type.string(),
-          String.slice(state.source, (state.start + 1)..(state.current - 2))
+          if slice_to < slice_from do
+            ""
+          else
+            String.slice(state.source, slice_from..slice_to)
+          end
         )
 
       true ->

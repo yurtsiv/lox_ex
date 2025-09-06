@@ -1,8 +1,20 @@
 defmodule Lox.Interpreter do
   alias Lox.Expression, as: Expr
   alias Lox.Error
+  alias Lox.Error.RuntimeError
 
   use Lox.Token.Type
+
+  @error_messages %{
+    operand_number: "Operand must be a number",
+    left_operand_number: "Left operand must be a number",
+    right_operand_number: "Right operand must be a number",
+    operands_numbers: "Operands must be numbers",
+    operands_numbers_or_strings: "Operands must be numbers or strings",
+    division_by_zero: "Division by zer"
+  }
+
+  def error_messages, do: @error_messages
 
   def run(expression) do
     try do
@@ -10,9 +22,10 @@ defmodule Lox.Interpreter do
 
       {:ok, res}
     rescue
-      runtime_error ->
-        Error.report(runtime_error)
-        :error
+      error ->
+        Error.report(error)
+
+        {:error, error}
     end
   end
 
@@ -26,10 +39,7 @@ defmodule Lox.Interpreter do
         -right
 
       Type.bang() ->
-        is_truthy(right)
-
-      _ ->
-        nil
+        not is_truthy(right)
     end
   end
 
@@ -76,7 +86,7 @@ defmodule Lox.Interpreter do
         check_number_operands(operator, left, right)
 
         if right == 0 do
-          raise Error.RuntimeError, token: operator, message: "Division by zero"
+          raise RuntimeError, token: operator, message: @error_messages.division_by_zero
         end
 
         left / right
@@ -105,20 +115,20 @@ defmodule Lox.Interpreter do
   end
 
   defp evaluate_plus(token, _left, _right) do
-    raise Error.RuntimeError, token: token, message: "Operands must be numbers or strings"
+    raise Error.RuntimeError, token: token, message: @error_messages.operands_numbers_or_strings
   end
 
   defp check_number_operand(token, operand) do
     if not is_number(operand) do
-      raise Error.RuntimeError, token: token, message: "Operand must be a number"
+      raise Error.RuntimeError, token: token, message: @error_messages.operand_number
     end
   end
 
   defp check_number_operands(token, left, right) do
     cond do
-      not is_number(left) and not is_number(right) -> "Operands must be numbers"
-      not is_number(left) -> "Left operand must be a number"
-      not is_number(right) -> "Right operand must be a number"
+      not is_number(left) and not is_number(right) -> @error_messages.operands_numbers
+      not is_number(left) -> @error_messages.left_operand_number
+      not is_number(right) -> @error_messages.right_operand_number
       true -> nil
     end
     |> case do

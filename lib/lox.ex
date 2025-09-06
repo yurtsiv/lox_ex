@@ -10,6 +10,14 @@ defmodule Lox do
   }
 
   def start(_type, _args) do
+    if Mix.env() != :test do
+      start_cmd()
+    end
+
+    {:ok, self()}
+  end
+
+  def start_cmd do
     case System.argv() do
       [] ->
         Lox.Repl.run()

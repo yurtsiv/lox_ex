@@ -1,7 +1,8 @@
 defmodule Lox.ScannerTest do
-  use ExUnit.Case
   alias Lox.Scanner
   alias Lox.Token
+
+  use ExUnit.Case
   use Lox.Token.Type
 
   test "recognizes all tokens" do
