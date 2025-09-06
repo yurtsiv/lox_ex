@@ -75,6 +75,10 @@ defmodule Lox.Interpreter do
       Type.slash() ->
         check_number_operands(operator, left, right)
 
+        if right == 0 do
+          raise Error.RuntimeError, token: operator, message: "Division by zero"
+        end
+
         left / right
 
       Type.star() ->
