@@ -204,10 +204,9 @@ defmodule Lox.Parser do
 
   defp error(state, error_message) do
     token = peek(state)
-
-    Error.report(token, error_message)
-
-    raise Error.ParseError, state: state
+    error = %Error.ParseError{state: state, token: token, message: error_message}
+    Error.report(error)
+    raise error
   end
 
   defp match(types, state) do
